@@ -1,0 +1,207 @@
+
+
+/**umb_name:h1*/
+h1 {
+}
+
+/**umb_name:h2*/
+h2 {
+}
+
+/**umb_name:h3*/
+h3 {
+}
+
+/**umb_name:h4*/
+h4 {
+}
+
+/**umb_name:h5*/
+h5 {
+}
+
+/**umb_name:h6*/
+h6 {
+}
+
+
+.image-ms-100 img
+{
+    max-width: 100%;
+}
+
+.main-container
+{
+    max-width: 80% !important;
+    margin: 0 auto;
+}
+
+.carousel-container
+{
+    margin-bottom: 80px;
+}
+
+iframe
+{
+    max-width: 32.4%;
+}
+
+.video-container
+{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.container-load-btn{
+    height:100px;
+    margin-bottom:50px;
+}
+
+.v-expansion-panels
+{
+    border-radius: 0 !important;
+}
+
+.v-expansion-panel-header
+{
+    text-transform: capitalize;
+}
+
+.v-sheet.v-card
+{
+    transition: transform .5s ease;
+}
+
+    .v-sheet.v-card:hover
+    {
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+
+.v-expansion-panel-header:hover
+{
+    background-color: #D1D5ED;
+    color: #3f51b5;
+    font-weight: bold;
+}
+
+.v-expansion-panel-header:focus
+{
+    background-color: #D1D5ED;
+    color: #3f51b5;
+}
+
+.v-expansion-panel-header:active
+{
+    background-color: #D1D5ED;
+    color: #3f51b5;
+}
+
+
+.img-accordion
+{
+    object-fit: contain;
+    position: relative;
+    left: -140px;
+}
+
+.v-expansion-panel-content__wrap
+{
+    margin-top: 20px;
+}
+
+.theme--light.v-expansion-panels .v-expansion-panel-header .v-expansion-panel-header__icon .v-icon
+{
+    color: #6b57d2!important;
+}
+
+.container-cards{
+    margin-top:100px;
+    gap:100px;
+}
+
+.v-carousel__controls
+{
+    background: rgba(0,0,0,.0)!important;
+}
+
+.mdi-circle::before
+{
+    font-size: 14px;
+}
+
+.title-container>h1
+{
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 30px 60px;
+    border-radius: 2px;
+    color: black;
+}
+
+.v-responsive__content
+{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.accordion-template-container
+{
+    max-width: 50%;
+    margin: 0 auto!important;
+}
+
+
+
+
+
+
+
+@media only screen and (max-width: 600px)
+{
+    iframe
+    {
+        max-width: 100%;
+    }
+
+    .accordion-template-container
+    {
+        max-width: 100%;
+    }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 768px)
+{
+    iframe
+    {
+        max-width: 48.3%;
+    }
+
+    .accordion-template-container
+    {
+        max-width: 100%;
+    }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px)
+{
+    iframe
+    {
+        max-width: 31.7%;
+    }
+}
+
+
+@media only screen and (min-width: 1025px) and (max-width: 1440px)
+{
+    iframe
+    {
+        max-width: 32.1%;
+    }
+}
+
+
+
+
+

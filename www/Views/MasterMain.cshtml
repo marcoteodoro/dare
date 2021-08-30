@@ -1,0 +1,158 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<www.ViewModels.BaseModel>
+@{
+    Layout = null;
+    var cls = ViewBag.BodyClass;
+    var lang = System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLowerInvariant();
+    var link = "https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="description" content="@(Model.Content.Value<string>("description"))">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="@link" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <div id="app" class="demo" data-components="Carousel,Accordion,Video" data-websitemodel="@Model.FrontEndData">
+        <v-app>
+            <v-main class="main-container">
+                <carousel class="carousel-container" v-bind:items="model.carousel.items"></carousel>
+                <youtube-video v-bind:model="model.youtubeData"></youtube-video>
+                <accordion v-for="accordian in model.accordian.items" v-bind:key="accordian.id" v-bind:title="accordian.title" v-bind:body="accordian.body"></accordion>
+                <div class="d-flex flex-wrap w-100 justify-center align-start container-cards">
+                    <cards v-for="(card,index) in model.cards.items" v-bind:title="card.title" v-bind:body="card.body" :key="index"></cards>
+                </div>
+            </v-main>
+        </v-app>
+    </div>
+    <template id="carouselTemplate">
+        <v-carousel>
+            <v-carousel-item v-for="(item,index) in items"
+                             :key="index"
+                             :src="item.image"
+                             reverse-transition="fade-transition"
+                             transition="fade-transition">
+                <div class="d-flex w-100 justify-center"><div class="title-container" v-html="item.title"></div></div>
+            </v-carousel-item>
+        </v-carousel>
+    </template>
+    <template id="videos">
+        <div class="d-flex flex-wrap justify-center align-center">
+                <div class="video-container">
+                    <iframe v-for="video in model.videos" :src="video.embedUrl" type="text/html" width="640" height="360" :key="video"
+                            frameborder="0"></iframe>
+                </div>
+                <div class="d-flex container-load-btn justify-center align-center  w-100 ">
+                    <v-btn class="ma-2"
+                           outlined
+                           color="indigo" v-on:click="getData">
+                        Load More
+                    </v-btn>
+                </div>
+        </div>
+    </template>
+    <template id="accordionTemplate">
+        <v-row class="justify-center d-flex accordion-template-container">
+            <v-expansion-panels accordion>
+                <v-expansion-panel>
+                    <v-expansion-panel-header>{{title}}</v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <p class="image-ms-100" v-html="body"></p>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </v-expansion-panels>
+        </v-row>
+    </template>
+    <template id="cardTemplate">
+        <v-lazy min-height="200"
+                transition="fade-transition">
+            <v-card class="mx-auto"
+                    max-width="344"
+                    width="344">
+                <v-card-text>
+                    <p>{{title}}</p>
+                    <div class="text--primary image-ms-100" v-html="body">
+                    </div>
+                </v-card-text>
+            </v-card>
+        </v-lazy>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script>
+        Vue.component("carousel", {
+            props: ["items"],
+            template: ("#carouselTemplate")
+        });
+
+        Vue.component("accordion", {
+            props: ["title", "body"],
+            template: ("#accordionTemplate")
+        });
+
+        Vue.component("cards", {
+            props: ["title", "body"],
+            template: ("#cardTemplate")
+        });
+
+        Vue.component("youtube-video", {
+            props: ["model"],
+            template: ("#videos"),
+            mounted() {
+                console.log(this);
+            },
+            methods: {
+                async getData() {
+                    try {
+                        const response = await axios.get(
+                            '/Umbraco/Api/DareAPi/GetVideos?pageToken=' + this.model.nextPage + '&playListId=' + this.model.playListId
+                        );
+                        var data = response.data;
+                        this.model.videos = this.model.videos.concat(data.videos);
+                        this.model.nextPage = data.nextPage;
+                        this.model.prevPage = data.prevPage;
+                    } catch (error) {
+                        console.log(error);
+                    }
+                },
+            }
+        });
+
+        new Vue({
+            el: "#app",
+            vuetify: new Vuetify(),
+            data: {
+                model: {
+                    carousel: {
+                        items: []
+                    },
+                    accordian: {
+                        items: []
+                    },
+                    cards: [],
+                    youtubeData: {
+                        nextPage: '',
+                        prevPage: '',
+                        videos: []
+                    }
+                }
+            },
+            mounted() {
+                var vm = this;
+                var jsonData = vm.$el.getAttribute('data-websitemodel');
+                vm.model = JSON.parse(jsonData);
+                console.log(jsonData);
+            }
+        });
+    </script>
+    @RenderBody()
+</body>
+</html>

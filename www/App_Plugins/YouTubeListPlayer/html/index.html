@@ -1,0 +1,18 @@
+﻿<div ng-controller="dbl.YouTubeListPlayer as vm">
+    <label>add playlist id here</label>
+    <input type="text" ng-model="vm.playListId"/>
+    <button class="btn umb-button__button btn-info umb-button-- umb-outline" ng-click="vm.loadVideos()">load playlist</button>
+    <div class="media-list-grid" ng-show="vm.videos.length > 0">
+        <div data-element="media-grid" class="umb-media-grid">
+            <div data-element="media-grid-item-{{$index}}" class="umb-media-grid__item umb-outline umb-outline--surrounding"
+                 title="{{item.title}}"
+                 ng-repeat="item in vm.videos">
+                <div style="position: absolute; bottom: -60px; font-size: 12px;">
+                    <span>{{item.title}} | <a href="{{item.url}}" target="_blank">view video</a></span>
+                </div>
+                <img umb-image-lazy-load="{{item.thumbnail}}" class="umb-media-grid__item-image" draggable="false">
+
+            </div>
+        </div>
+    </div>
+</div>

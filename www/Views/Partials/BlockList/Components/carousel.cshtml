@@ -1,0 +1,7 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<Umbraco.Web.PublishedModels.Carousel>
+    @{
+        var data = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Items);
+    }
+<ul>
+    <carousel-item :data="@data"></carousel-item>
+</ul>
